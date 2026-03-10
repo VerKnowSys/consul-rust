@@ -17,10 +17,13 @@ pub struct Weights {
 pub struct Node {
     ID: String,
     Node: String,
-    Address: String,
+    /// allow reading Address
+    pub Address: String,
+    /// allow reading Meta data
+    pub Meta: HashMap<String, String>,
     Datacenter: String,
+    #[serde(skip)] // skipped because it's often null for custom nodes
     TaggedAddresses: HashMap<String, String>,
-    Meta: HashMap<String, String>,
     CreateIndex: u64,
     ModifyIndex: u64,
 }
