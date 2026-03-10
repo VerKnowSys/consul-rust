@@ -31,10 +31,10 @@ pub trait KV {
 impl KV for Client {
     fn acquire(&self, pair: &KVPair, o: Option<&WriteOptions>) -> Result<(bool, WriteMeta)> {
         let mut params = HashMap::new();
-        if let Some(i) = pair.Flags {
-            if i != 0 {
-                params.insert(String::from("flags"), i.to_string());
-            }
+        if let Some(i) = pair.Flags
+            && i != 0
+        {
+            params.insert(String::from("flags"), i.to_string());
         }
         if let Some(ref session) = pair.Session {
             params.insert(String::from("acquire"), session.to_owned());
@@ -68,10 +68,10 @@ impl KV for Client {
 
     fn put(&self, pair: &KVPair, o: Option<&WriteOptions>) -> Result<(bool, WriteMeta)> {
         let mut params = HashMap::new();
-        if let Some(i) = pair.Flags {
-            if i != 0 {
-                params.insert(String::from("flags"), i.to_string());
-            }
+        if let Some(i) = pair.Flags
+            && i != 0
+        {
+            params.insert(String::from("flags"), i.to_string());
         }
         let path = format!("/v1/kv/{}", pair.Key);
         put(&path, Some(&pair.Value), &self.config, params, o)
@@ -79,10 +79,10 @@ impl KV for Client {
 
     fn release(&self, pair: &KVPair, o: Option<&WriteOptions>) -> Result<(bool, WriteMeta)> {
         let mut params = HashMap::new();
-        if let Some(i) = pair.Flags {
-            if i != 0 {
-                params.insert(String::from("flags"), i.to_string());
-            }
+        if let Some(i) = pair.Flags
+            && i != 0
+        {
+            params.insert(String::from("flags"), i.to_string());
         }
         if let Some(ref session) = pair.Session {
             params.insert(String::from("release"), session.to_owned());

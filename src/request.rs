@@ -30,7 +30,7 @@ pub fn get_vec<R: DeserializeOwned>(
 ) -> Result<(Vec<R>, QueryMeta)> {
     let datacenter: Option<&String> = options
         .and_then(|o| o.datacenter.as_ref())
-        .or_else(|| config.datacenter.as_ref());
+        .or(config.datacenter.as_ref());
 
     if let Some(dc) = datacenter {
         params.insert(String::from("dc"), dc.to_owned());
@@ -48,7 +48,7 @@ pub fn get_vec<R: DeserializeOwned>(
     let url =
         Url::parse_with_params(&url_str, params.iter()).chain_err(|| "Failed to parse URL")?;
     let start = Instant::now();
-    let request_builder = add_config_options(config.http_client.get(url), &config);
+    let request_builder = add_config_options(config.http_client.get(url), config);
     let response = request_builder.send();
     response
         .chain_err(|| "HTTP request to consul failed")
@@ -94,7 +94,7 @@ pub fn get<R: DeserializeOwned>(
 ) -> Result<(R, QueryMeta)> {
     let datacenter: Option<&String> = options
         .and_then(|o| o.datacenter.as_ref())
-        .or_else(|| config.datacenter.as_ref());
+        .or(config.datacenter.as_ref());
 
     if let Some(dc) = datacenter {
         params.insert(String::from("dc"), dc.to_owned());
@@ -112,7 +112,7 @@ pub fn get<R: DeserializeOwned>(
     let url =
         Url::parse_with_params(&url_str, params.iter()).chain_err(|| "Failed to parse URL")?;
     let start = Instant::now();
-    let request_builder = add_config_options(config.http_client.get(url), &config);
+    let request_builder = add_config_options(config.http_client.get(url), config);
     let response = request_builder.send();
     response
         .chain_err(|| "HTTP request to consul failed")
@@ -191,7 +191,7 @@ where
     let start = Instant::now();
     let datacenter: Option<&String> = options
         .and_then(|o| o.datacenter.as_ref())
-        .or_else(|| config.datacenter.as_ref());
+        .or(config.datacenter.as_ref());
 
     if let Some(dc) = datacenter {
         params.insert(String::from("dc"), dc.to_owned());
@@ -206,7 +206,7 @@ where
     } else {
         builder
     };
-    let builder = add_config_options(builder, &config);
+    let builder = add_config_options(builder, config);
     builder
         .send()
         .chain_err(|| "HTTP request to consul failed")
