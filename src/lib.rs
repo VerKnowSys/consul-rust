@@ -1,5 +1,6 @@
 #![allow(non_snake_case)]
 #![allow(unused_doc_comments)]
+#![allow(unexpected_cfgs)]
 
 #[macro_use]
 extern crate error_chain;
